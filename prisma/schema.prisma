@@ -1,0 +1,157 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model Account {
+  id                    String        @id
+  current_balance       Decimal       @db.Decimal(7, 2)
+  financial_institution String
+  description           String
+  account_type          AccountType   @default(CHECKING_ACCOUNT)
+  accountColor          String
+  user_id               String
+  created_at            DateTime      @default(now())
+  updated_at            DateTime?
+  User                  User          @relation(fields: [user_id], references: [id])
+  CreditCard            CreditCard[]
+  Transaction           Transaction[]
+}
+
+model CreditCard {
+  id             String    @id
+  limit          Decimal   @db.Decimal(7, 2)
+  flag           Flag
+  accountId      String
+  user_id        String
+  closing_day    DateTime
+  expiration_day DateTime
+  created_at     DateTime  @default(now())
+  updated_at     DateTime?
+  Account        Account   @relation(fields: [accountId], references: [id])
+  User           User      @relation(fields: [user_id], references: [id])
+  Invoice        Invoice[]
+}
+
+model Invoice {
+  id             String       @id
+  description    String
+  category       CategoryType @default(CREDIT)
+  credit_card_id String
+  user_id        String
+  amount         Decimal      @db.Decimal(7, 2)
+  created_at     DateTime     @default(now())
+  updated_at     DateTime?
+  CreditCard     CreditCard   @relation(fields: [credit_card_id], references: [id])
+  User           User         @relation(fields: [user_id], references: [id])
+}
+
+model Transaction {
+  id               String          @id
+  description      String
+  category         CategoryType
+  account_id       String
+  user_id          String
+  was_paid         Boolean         @default(false)
+  amount           Decimal         @db.Decimal(7, 2)
+  transaction_type TransactionType
+  created_at       DateTime        @default(now())
+  updated_at       DateTime?
+  Account          Account         @relation(fields: [account_id], references: [id])
+  User             User            @relation(fields: [user_id], references: [id])
+}
+
+model User {
+  id          String        @id
+  full_name   String        @db.VarChar(255)
+  photo       String?
+  nickname    String?
+  email       String        @unique
+  password    String
+  phone       String?
+  zip         Int?
+  state       String?
+  city        String?
+  birthday    DateTime?
+  gender      Gender        @default(OTHERS)
+  nationality String?
+  cpf         Int?
+  language    Language      @default(PT_BR)
+  coin        Coin          @default(BRL)
+  theme       Theme         @default(DARK)
+  created_at  DateTime      @default(now())
+  updated_at  DateTime?
+  Account     Account[]
+  CreditCard  CreditCard[]
+  Invoice     Invoice[]
+  Transaction Transaction[]
+}
+
+enum AccountType {
+  CHECKING_ACCOUNT
+  MONEY
+  SAVINGS
+  INVESTMENTS
+  OTHERS
+}
+
+enum CategoryType {
+  HOUSE
+  CELL
+  OVERDRAFT
+  EDUCATION
+  ELECTRONICS
+  INTERNET
+  LEISURE
+  OTHERS
+  RESTAURANT
+  HEALTH
+  SERVICES
+  SUPERMARKET
+  TRANSPORT
+  CLOTHING
+  TRAVEL
+  CREDIT
+  INVESTMENT
+  AWARD
+  GIFT
+  WAGE
+}
+
+enum Coin {
+  BRL
+  USD
+}
+
+enum Flag {
+  VISA
+  MASTERCARD
+  ELO
+  OTHERS
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHERS
+}
+
+enum Language {
+  PT_BR
+  EN_US
+}
+
+enum Theme {
+  DARK
+  LIGHT
+}
+
+enum TransactionType {
+  EXPENSE
+  INCOME
+}
