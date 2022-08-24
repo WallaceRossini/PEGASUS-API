@@ -9,7 +9,7 @@ datasource db {
 }
 
 model Account {
-  id                    String        @id
+  id                    String        @id @default(uuid())
   current_balance       Decimal       @db.Decimal(7, 2)
   financial_institution String
   description           String
@@ -24,7 +24,7 @@ model Account {
 }
 
 model CreditCard {
-  id             String    @id
+  id             String    @id @default(uuid())
   limit          Decimal   @db.Decimal(7, 2)
   flag           Flag
   accountId      String
@@ -39,7 +39,7 @@ model CreditCard {
 }
 
 model Invoice {
-  id             String       @id
+  id             String       @id @default(uuid())
   description    String
   category       CategoryType @default(CREDIT)
   credit_card_id String
@@ -52,7 +52,7 @@ model Invoice {
 }
 
 model Transaction {
-  id               String          @id
+  id               String          @id @default(uuid())
   description      String
   category         CategoryType
   account_id       String
@@ -67,7 +67,7 @@ model Transaction {
 }
 
 model User {
-  id          String        @id
+  id          String        @id @default(uuid())
   full_name   String        @db.VarChar(255)
   photo       String?
   nickname    String?
