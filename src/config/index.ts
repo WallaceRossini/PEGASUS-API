@@ -3,11 +3,13 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 const {
-  PORT
+  PORT,
+  TOKEN
 } = process.env
 
 const config = {
-  PORT: Number(PORT)
+  PORT: Number(PORT),
+  TOKEN: String(TOKEN)
 }
 
 export default config
