@@ -5,8 +5,8 @@ import { IRegister, ISignIn } from '../interface/IAuth'
 import { compare, hash } from 'bcrypt'
 import { sign } from 'jsonwebtoken'
 import config from '../config'
-import { ISignInDTO } from '../dto/IUserDTO'
-import { plainToClass } from 'class-transformer'
+import { IUser } from '../interface/IUser'
+import { SignInDTO } from '../dto/UserDTO'
 
 const { TOKEN } = config
 export class UserRepository {
@@ -54,11 +54,11 @@ export class UserRepository {
     if (!password_match)
       return new AppError('Invalid email and/or password');
 
-    let user = plainToClass(ISignInDTO, { ...existUser })
+    const token = sign({ ...existUser }, TOKEN)
 
-    const token = sign({user}, TOKEN)
-
-    return { ...user, token: `Bearer ${token}` }
+    let user = new SignInDTO({ ...existUser, token })
+    
+    return user
   }
 
   async register({ full_name, email, password }: IRegister) {
