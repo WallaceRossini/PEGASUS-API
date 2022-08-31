@@ -1,0 +1,2 @@
+# PEGASUS-API
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a3ce1528f094491bb26868049e67573e)](https://app.codacy.com/gh/WallaceRossini/PEGASUS-API?utm_source=github.com&utm_medium=referral&utm_content=WallaceRossini/PEGASUS-API&utm_campaign=Badge_Grade_Settings)
