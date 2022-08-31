@@ -2,7 +2,7 @@ export interface IUser {
   full_name: String
 	photo: String
 	nickname: String
-  password?: String
+  password: String
 	email: String
 	phone: String
 	zip: String

@@ -14,7 +14,7 @@ model Account {
   financial_institution String
   description           String
   account_type          AccountType   @default(CHECKING_ACCOUNT)
-  accountColor          String
+  account_color         String
   user_id               String
   created_at            DateTime      @default(now())
   updated_at            DateTime?

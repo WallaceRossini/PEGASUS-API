@@ -29,7 +29,7 @@ CREATE TABLE "Account" (
     "financial_institution" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "account_type" "AccountType" NOT NULL DEFAULT 'CHECKING_ACCOUNT',
-    "accountColor" TEXT NOT NULL,
+    "account_color" TEXT NOT NULL,
     "user_id" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3),

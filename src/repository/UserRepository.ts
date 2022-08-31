@@ -8,7 +8,7 @@ import config from '../config'
 import { IUser } from '../interface/IUser'
 import { SignInDTO } from '../dto/UserDTO'
 
-const { TOKEN } = config
+const { SECRET_JWT, EXPIRES_JWT } = config
 export class UserRepository {
   private prisma: PrismaClient
 
@@ -54,10 +54,10 @@ export class UserRepository {
     if (!password_match)
       return new AppError('Invalid email and/or password');
 
-    const token = sign({ ...existUser }, TOKEN)
+    const token = sign({ ...existUser }, SECRET_JWT, { expiresIn: EXPIRES_JWT })
 
     let user = new SignInDTO({ ...existUser, token })
-    
+
     return user
   }
 
